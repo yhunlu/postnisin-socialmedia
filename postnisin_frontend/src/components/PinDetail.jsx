@@ -13,7 +13,7 @@ const PinDetail = ({ user }) => {
   const [addingComment, setAddingComment] = useState(false);
 
   const { pinId } = useParams();
-
+  
   const addComment = () => {
     if (comment) {
       setAddingComment(true);
