@@ -63,7 +63,7 @@ const CreatePin = ({ user }) => {
                     _ref: imageAsset?._id
                 }
             },
-            UserID: user._id,
+            userID: user._id,
             postedBy: {
                 _type: 'postedBy',
                 _ref: user._id
@@ -177,6 +177,7 @@ const CreatePin = ({ user }) => {
 
                 {categories.map((category) => (
                   <option
+                    key={category.name}
                     className="text-base border-0 outline-none capitalize bg-white text-black"
                     value={category.name}
                   >

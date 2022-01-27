@@ -7,10 +7,12 @@ import { BsFillArrowUpRightCircleFill } from 'react-icons/bs';
 
 import { client, urlFor } from '../client';
 import { fetchUser } from '../utils/fetchUser';
+// import { userUnSavedPinsQuery } from '../utils/data';
 
 const Pin = ({ pin: { postedBy, image, _id, destination, save } }) => {
   const [postHovered, setPostHovered] = useState(false);
   const [savingPost, setSavingPost] = useState(false);
+  // const [savekey, setSavekey] = useState([]);
 
   const navigate = useNavigate();
 
@@ -44,6 +46,30 @@ const Pin = ({ pin: { postedBy, image, _id, destination, save } }) => {
         });
     }
   };
+
+  // const unsavePin = (userId, id) => {
+  //   if (alreadySaved) {
+  //     // setSavingPost(true);
+
+  //     client
+  //     .patch(id)
+  //     .unset(["save"])
+  //     .commit()
+
+  //     const query = userUnSavedPinsQuery(userId, id);
+
+  //     client.fetch(query).then((data) => {
+  //       client
+  //       .patch(id)
+  //       .insert('after', 'save', [data[0].save[0]])
+  //       .commit()
+  //       .then(() => {
+  //         // window.location.reload();
+  //         // setSavingPost(false);
+  //       });
+  //     });
+  //   }
+  // };
 
   const deletePin = (id) => {
     client.delete(id).then(() => {
@@ -83,6 +109,10 @@ const Pin = ({ pin: { postedBy, image, _id, destination, save } }) => {
               {alreadySaved ? (
                 <button
                   type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    // unsavePin(user.googleId, _id);
+                  }}
                   className="bg-green-500 opacity-70 hover:opacity-100 text-white font-bold px-5 py-1 text-base rounded-3xl hover:shadow-md outlined-none"
                 >
                   {save?.length} Saved
@@ -109,7 +139,9 @@ const Pin = ({ pin: { postedBy, image, _id, destination, save } }) => {
                   className="bg-white flex items-center gap-2 text-black font-bold p-2 pl-4 pr-4 rounded-full opacity-70 hover:opacity-100 hover:shadow-md"
                 >
                   <BsFillArrowUpRightCircleFill />
-                  {destination.length > 15 ? `${destination.slice(0, 15)}...` : destination}
+                  {destination.length > 15
+                    ? `${destination.slice(0, 15)}...`
+                    : destination}
                 </a>
               )}
               {postedBy?._id === user.googleId && (
