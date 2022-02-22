@@ -1,40 +1,27 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { HiMenu } from 'react-icons/hi';
 import { AiFillCloseCircle } from 'react-icons/ai';
-import { Link, Route, Routes, useNavigate } from 'react-router-dom';
+import { Link, Route, Routes } from 'react-router-dom';
 
 import { Sidebar, UserProfile } from '../components';
 import { userQuery } from '../utils/data';
 import { client } from '../client';
 import Pins from './Pins';
 import logo from '../assets/logo.png';
-import { fetchUser } from '../utils/fetchUser';
 
 const Home = () => {
   const [toggleSidebar, setToggleSidebar] = useState(false);
   const [user, setUser] = useState();
   const scrollRef = useRef(null);
-  const isMountedRef = useRef(null);
 
-  const navigate = useNavigate();
-
-  const userInfo = fetchUser();
+  const userInfo = localStorage.getItem('user') !== 'undefined' ? JSON.parse(localStorage.getItem('user')) : localStorage.clear();
 
   useEffect(() => {
-    isMountedRef.current = true;
-    if (userInfo) {
-      const query = userQuery(userInfo?.googleId);
+    const query = userQuery(userInfo?.googleId);
 
-      client.fetch(query).then((data) => {
-        if (isMountedRef.current) {
-          setUser(data[0]);
-        }
-      });
-    } else {
-      navigate('/login');
-    }
-
-    return () => (isMountedRef.current = false);
+    client.fetch(query).then((data) => {
+      setUser(data[0]);
+    });
   }, []);
 
   useEffect(() => {

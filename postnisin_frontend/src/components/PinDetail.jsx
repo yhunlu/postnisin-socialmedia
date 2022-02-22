@@ -13,7 +13,7 @@ const PinDetail = ({ user }) => {
   const [addingComment, setAddingComment] = useState(false);
 
   const { pinId } = useParams();
-  
+
   const addComment = () => {
     if (comment) {
       setAddingComment(true);
@@ -86,10 +86,15 @@ const PinDetail = ({ user }) => {
                 onClick={(e) => e.stopPropagation()}
                 className="bg-white w-9 h-9 rounded-full flex items-center justify-center text-dark text-xl opacity-75 hover:opacity-100 hover:shadow-md outline-none"
               >
-                <MdDownloadForOffline className="w-20 h-20"/>
+                <MdDownloadForOffline className="w-20 h-20" />
               </a>
             </div>
-            <a href={pinDetail.destination} target="_black" rel="noreferrer" className="ml-5 flex justify-between items-center">
+            <a
+              href={pinDetail.destination}
+              target="_black"
+              rel="noreferrer"
+              className="ml-5 flex justify-between items-center"
+            >
               {pinDetail.destination}
             </a>
           </div>
