@@ -6,20 +6,20 @@ import { AiTwotoneDelete } from 'react-icons/ai';
 import { BsFillArrowUpRightCircleFill } from 'react-icons/bs';
 
 import { client, urlFor } from '../client';
-import { fetchUser } from '../utils/fetchUser';
-// import { userUnSavedPinsQuery } from '../utils/data';
 
 const Pin = ({ pin: { postedBy, image, _id, destination, save } }) => {
   const [postHovered, setPostHovered] = useState(false);
   const [savingPost, setSavingPost] = useState(false);
-  // const [savekey, setSavekey] = useState([]);
 
   const navigate = useNavigate();
 
-  const user = fetchUser();
+  const user =
+    localStorage.getItem('user') !== 'undefined'
+      ? JSON.parse(localStorage.getItem('user'))
+      : localStorage.clear();
 
   const alreadySaved = !!save?.filter(
-    (item) => item.postedBy._id === user?.googleId
+    (item) => item?.postedBy?._id === user?.googleId
   )?.length;
 
   const savePin = (id) => {
@@ -46,30 +46,6 @@ const Pin = ({ pin: { postedBy, image, _id, destination, save } }) => {
         });
     }
   };
-
-  // const unsavePin = (userId, id) => {
-  //   if (alreadySaved) {
-  //     // setSavingPost(true);
-
-  //     client
-  //     .patch(id)
-  //     .unset(["save"])
-  //     .commit()
-
-  //     const query = userUnSavedPinsQuery(userId, id);
-
-  //     client.fetch(query).then((data) => {
-  //       client
-  //       .patch(id)
-  //       .insert('after', 'save', [data[0].save[0]])
-  //       .commit()
-  //       .then(() => {
-  //         // window.location.reload();
-  //         // setSavingPost(false);
-  //       });
-  //     });
-  //   }
-  // };
 
   const deletePin = (id) => {
     client.delete(id).then(() => {
@@ -111,7 +87,6 @@ const Pin = ({ pin: { postedBy, image, _id, destination, save } }) => {
                   type="button"
                   onClick={(e) => {
                     e.stopPropagation();
-                    // unsavePin(user.googleId, _id);
                   }}
                   className="bg-green-500 opacity-70 hover:opacity-100 text-white font-bold px-5 py-1 text-base rounded-3xl hover:shadow-md outlined-none"
                 >
